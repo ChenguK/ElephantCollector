@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Elephant List</h1>
+
+{% for elephant in elephants %}
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">{{ elephant.name }}</span>
+            <p>Affiliation: {{ elephant.affiliation }}</p>
+            <p>Species: {{ elephant.species }}</p>
+            <p>Sex: {{ elephant.sex }}</p>
+            <p>Fictional: {{ elephant.fictional }}</p>
+            <p>Date of Birth: {{ elephant.dob }}</p>
+            <p>Date of Death: {{ elephant.dod }}</p>
+            <p>Wikilink: {{ elephant.wikilink }}</p>
+            <img src="{{ elephant.image }}" alt="{{ elephant.name }}">
+            <p>Note: {{ elephant.note }} </p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
