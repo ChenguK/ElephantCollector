@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('dob', models.CharField(max_length=50)),
                 ('dod', models.CharField(max_length=50)),
                 ('wikilink', models.URLField(max_length=100)),
-                ('image', models.ImageField(upload_to='', width_field=100)),
+                ('image', models.ImageField(upload_to='images')),
                 ('note', models.TextField(max_length=300)),
             ],
         ),
