@@ -11,8 +11,8 @@
             <p>Fictional: {{ elephant.fictional }}</p>
             <p>Date of Birth: {{ elephant.dob }}</p>
             <p>Date of Death: {{ elephant.dod }}</p>
-            <p>Wikilink: <a href="{{ elephant.wikilink }}">Click to Learn More</a></p>
-            <img src="{{ elephant.image }}" alt="{{ elephant.name }}">
+            <p>Wikilink: <a href="{{ elephant.wikilink }}">Click to Learn More About {{ elephant.name }}</a></p>
+            <img src="{{ elephant.image.url }}"  style="max-width: 300px;"; alt="{{ elephant.name }}">
             <p>Note: {{ elephant.note }} </p>
     </div>
     <div class="card-action">

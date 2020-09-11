@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.core.files.storage import FileSystemStorage
 from .models import Elephant
 import requests
 

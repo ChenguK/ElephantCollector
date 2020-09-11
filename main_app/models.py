@@ -14,7 +14,7 @@ class Elephant(models.Model):
     dob = models.CharField(max_length=50)
     dod = models.CharField(max_length=50)
     wikilink = models.URLField(max_length=100)
-    image = models.ImageField(upload_to='images')
+    image = models.ImageField(upload_to='main_app/static/images')
     note = models.TextField(max_length=300)
 
     def __str__(self):
@@ -22,3 +22,4 @@ class Elephant(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'elephant_id': self.id })
+ 
