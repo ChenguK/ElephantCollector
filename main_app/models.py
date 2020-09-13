@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from datetime import date
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -53,7 +54,8 @@ class Elephant(models.Model):
     wikilink = models.URLField(max_length=200)
     image = models.ImageField(upload_to='images/')
     note = models.TextField(max_length=500)
-    trainer = models.ManyToManyField(Trainer)
+    trainers = models.ManyToManyField(Trainer)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 # placeholder = "Enter the Year the Elephant Died, Unknown or Alive"
 #     @Html.TextBoxFor(m. =>.new { htmlAttributes = new { @class = "form-control input-md",
@@ -82,3 +84,11 @@ class Care(models.Model):
 
     class Meta:
         ordering = ['-date']
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    elephant = models.ForeignKey(Elephant, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Photo for elephant_id: {self.elephant_id} @{self.url}'
+

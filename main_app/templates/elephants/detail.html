@@ -12,13 +12,14 @@
                     <p>Date of Birth: {{ elephant.birthdate }}</p>
                     <p>Date of Death: {{ elephant.died }}</p>
                     <p>Wikilink: <a href="{{ elephant.wikilink }}" target="_blank">Click to Learn More About {{ elephant.name }}</a></p>
+                    <br>
                     <a class="modal-trigger waves-light waves-effect" href="#modal1"><img src="{{ elephant.image.url }}"  style="max-height: 200px;"; alt="{{ elephant.name }}"></a>
                     <p>Note: {{ elephant.note }} </p>
             </div>
             <div class="card-action">
                 <a href="{% url 'elephants_update' elephant.id %}">Edit</a>
                 <a href="{% url 'elephants_delete' elephant.id %}">Delete</a>
-
+                
                 <div id="modal1" class="modal">
                     <div class="modal-content">
                         <h3>{{ elephant.name }}</h3>
@@ -33,39 +34,97 @@
             </div>
           </div>
     </div>
-</div>
-    <div class="col s6">
-        <form action="{% url 'add_care' elephant.id %}" method="post">
-            {% csrf_token %}
-            {{ care_form.as_p }}
-            <input type="submit" value="Add Care" class="btn">
-        </form>
-        <br>
-        {% if elephant.cared_for_today %}
-        <div class="card-panel teal-text center-align">{{ elephant.name }} has been well cared for today</div>
-        {% else %}
-        <div class="card-panel teal-text center-align">{{ elephant.name }} needs care</div>
-        {% endif %}
-        <table class="striped">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Care</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for care in elephant.care_set.all %}
-                <tr>
-                    <td>{{ care.date }}</td>
-                    <td>{{ care.get_service_display }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% for photo in elephant.photo_set.all %}
+            <img src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img card-panel">
+            {% empty %}
+            <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+        {% endfor %}
+            <form action="{% url 'add_photo' elephant.id %}" enctype="multipart/form-data" method="post" class="card-panel">
+                {% csrf_token %}
+                <input type="file" name="photo-file">
+                    <br><br>
+                <input type="submit" value="Upload Photo" class="btn">
+            </form>
+    </div>
+        <div class="col s6">
+            <form action="{% url 'add_care' elephant.id %}" method="post">
+                {% csrf_token %}
+                {{ care_form.as_p }}
+                <input type="submit" value="Add Care" class="btn">
+            </form>
+            <br>
+            {% if elephant.cared_for_today %}
+            <div class="card-panel teal-text center-align">{{ elephant.name }} has been well cared for today</div>
+            {% else %}
+            <div class="card-panel teal-text center-align">{{ elephant.name }} needs care</div>
+            {% endif %}
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Care</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for care in elephant.care_set.all %}
+                    <tr>
+                        <td>{{ care.date }}</td>
+                        <td>{{ care.get_service_display }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <hr> 
+<div class="row">
+	<div class="col s6">
+		<h4>{{ elephant.name }}'s Trainers</h4>
+    {% if elephant.trainers.count %}
+      {% for trainer in elephant.trainers.all %}
+        <div class="card">
+			<div class="card-content">
+				<span class="card-title">
+					{{ trainer.name.capitalize }} with <span class="{{trainer.color.lower}}-text">{{ trainer.color.capitalize }}</span> Shorts!
+            </span>
+          </div>
+            <div class="card-action">
+                <form action="{% url 'unassoc_trainer' elephant.id trainer.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Remove</button>
+                </form>
+            </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{ elephant.name }} is Lonely :(</h5>
+    {% endif %}
+  </div>
+  <div class="col s6">
+<h4>Available Trainers</h4>
+    {% if trainers.count %}
+    {% for trainer in trainers.all %}
+        <div class="card">
+            <div class="card-content">
+                    <span class="card-title">
+                        {{ trainer.name.capitalize }} with <span class="{{trainer.color.lower}}-text">{{ trainer.color.capitalize }}</span> Shorts!
+                    </span>
+            </div>
+            <div class="card-action">
+                <form action="{% url 'assoc_trainer' elephant.id trainer.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Add</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h5>{{ elephant.name }} Already Has All Trainers Available</h5>
+    {% endif %}
 </div>
+</div>
+
 <script>
   $(document).ready(function(){
     $('.modal').modal();

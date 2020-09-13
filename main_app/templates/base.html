@@ -20,8 +20,17 @@
                 </ul>
                 <ul class="right">
                     <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                    <li>Signed in as {{ user.username }}</li>
                     <li><a href="{% url 'elephants_create' %}">Add An Elephant</a></li>
                     <li><a href="{% url 'index' %}">View All My Elephants</a></li>
+                    <li><a href="{% url 'trainers_index' %}">View All My Trainers</a></li>
+                    <li><a href="{% url 'trainers_create' %}">Add A Trainer</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

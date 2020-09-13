@@ -123,3 +123,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'main_app/static/')
+
+LOGIN_REDIRECT_URL = '/elephants/'
+
+LOGOUT_REDIRECT_URL = '/'
