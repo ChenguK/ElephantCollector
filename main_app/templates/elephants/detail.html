@@ -1,24 +1,89 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<div class="row">
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">{{ elephant.name }}</span>
+                    <p>Affiliation: {{ elephant.affiliation }}</p>
+                    <p>Species: {{ elephant.species }}</p>
+                    <p>Sex: {{ elephant.get_sex_display }}</p>
+                    <p>Date of Birth: {{ elephant.birthdate }}</p>
+                    <p>Date of Death: {{ elephant.died }}</p>
+                    <p>Wikilink: <a href="{{ elephant.wikilink }}" target="_blank">Click to Learn More About {{ elephant.name }}</a></p>
+                    <a class="modal-trigger waves-light waves-effect" href="#modal1"><img src="{{ elephant.image.url }}"  style="max-height: 200px;"; alt="{{ elephant.name }}"></a>
+                    <p>Note: {{ elephant.note }} </p>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'elephants_update' elephant.id %}">Edit</a>
+                <a href="{% url 'elephants_delete' elephant.id %}">Delete</a>
 
-<div class="card">
-    <div class="card-content">
-        <span class="card-title">{{ elephant.name }}</span>
-            <p>Affiliation: {{ elephant.affiliation }}</p>
-            <p>Species: {{ elephant.species }}</p>
-            <p>Sex: {{ elephant.get_sex_display }}</p>
-            <p>Date of Birth: {{ elephant.get_birthdate_display }}</p>
-            <p>Date of Death: {{ elephant.get_died_display }}</p>
-            <p>Wikilink: <a href="{{ elephant.wikilink }}" target="_blank">Click to Learn More About {{ elephant.name }}</a></p>
-            <img src="{{ elephant.image.url }}"  style="max-height: 200px;"; alt="{{ elephant.name }}">
-            <p>Note: {{ elephant.note }} </p>
+                <div id="modal1" class="modal">
+                    <div class="modal-content">
+                        <h3>{{ elephant.name }}</h3>
+                        <div style="display: inline-flex" >
+                            <img class="modal-image" src="{{ elephant.image.url }}" style="max-height: 450px;"; alt="{{ elephant.name }}" /> &nbsp;&nbsp; 
+                            <p class="modal-note" style="font-weight: bold; padding: 7rem 0 0 1rem;">Note: {{ elephant.note }} </p>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+            </div>
+          </div>
     </div>
-    <div class="card-action">
-        <a href="{% url 'elephants_update' elephant.id %}">Edit</a>
-        <a href="{% url 'elephants_delete' elephant.id %}">Delete</a>
+</div>
+    <div class="col s6">
+        <form action="{% url 'add_care' elephant.id %}" method="post">
+            {% csrf_token %}
+            {{ care_form.as_p }}
+            <input type="submit" value="Add Care" class="btn">
+        </form>
+        <br>
+        {% if elephant.cared_for_today %}
+        <div class="card-panel teal-text center-align">{{ elephant.name }} has been well cared for today</div>
+        {% else %}
+        <div class="card-panel teal-text center-align">{{ elephant.name }} needs care</div>
+        {% endif %}
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Care</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for care in elephant.care_set.all %}
+                <tr>
+                    <td>{{ care.date }}</td>
+                    <td>{{ care.get_service_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
+<hr> 
+</div>
+<script>
+  $(document).ready(function(){
+    $('.modal').modal();
+  });
 
+  const dateEl = document.getElementById('id_date');
+  const selectEl = document.getElementById('id_service');
+
+  M.Datepicker.init(dateEl, {
+        format: 'yyyy-mm-dd',
+        defaultDate: new Date(),
+        setDefaultDate: true,
+        autoClose: true,
+    });
+
+    M.FormSelect.init(selectEl);
+  
+</script>
 
 </div>
 

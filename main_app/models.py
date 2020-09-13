@@ -1,19 +1,20 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
 
 
 # Create your models here.
 
-BIRTH = (
-    ('U', 'Unknown'),
-    ('D', 'Year'),
-)
+# BIRTH = (
+#     ('U', 'Unknown'),
+#     ('D', 'Year'),
+# )
 
-DEATH = (
-    ('U', 'Unknown'),
-    ('D', 'Year'),
-    ('A', 'Alive'),
- )
+# DEATH = (
+#     ('U', 'Unknown'),
+#     ('D', 'Year'),
+#     ('A', 'Alive'),
+#  )
 
 SEX = (
     ('F', 'Female'),
@@ -21,12 +22,21 @@ SEX = (
     ('U', 'Unknown')
 )
 
-CARE = (
+SERVICES = (
     ('O', 'Oral Hygiene'),
-    ('F', 'Foot Care'),
+    ('F', 'Checked Feet'),
     ('E', 'Exercise'),
 )
 
+class Trainer(models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('trainers_detail', kwargs={ 'trainer_id': self.id})
 
 
 class Elephant(models.Model):
@@ -38,34 +48,37 @@ class Elephant(models.Model):
         choices=SEX,
         default=SEX[0][0],
     )
-    birthdate = models.CharField(
-        max_length=1,
-        choices=BIRTH,
-        default=BIRTH[0][0],
-    )
-    died = models.CharField(
-        max_length=1,
-        choices=DEATH,
-        default=DEATH[0][0],
-    )
+    birthdate = models.CharField(max_length=50) 
+    died = models.CharField(max_length=50)
     wikilink = models.URLField(max_length=200)
     image = models.ImageField(upload_to='images/')
     note = models.TextField(max_length=500)
+    trainer = models.ManyToManyField(Trainer)
+
+# placeholder = "Enter the Year the Elephant Died, Unknown or Alive"
+#     @Html.TextBoxFor(m. =>.new { htmlAttributes = new { @class = "form-control input-md",
+# @placeholder = "Enter the Elephant's Birth Year or Unknown" } })
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'elephant_id': self.id })
+
+    def cared_for_today(self):
+        return self.care_set.filter(date=date.today()).count() >= len(SERVICES)
  
 class Care(models.Model):
     date = models.DateField('care date')
-    care = models.CharField(
+    service = models.CharField(
         max_length=1,
-        choices=CARE,
-        default=CARE[0][0],
-        )
+        choices=SERVICES,
+        default=SERVICES[0][0],
+    )
     elephant = models.ForeignKey(Elephant, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.get_care_display()} on {self.date}"
+        return f'{self.get_service_display()} on {self.date}'
+
+    class Meta:
+        ordering = ['-date']
