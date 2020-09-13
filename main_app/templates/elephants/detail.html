@@ -7,18 +7,19 @@
         <span class="card-title">{{ elephant.name }}</span>
             <p>Affiliation: {{ elephant.affiliation }}</p>
             <p>Species: {{ elephant.species }}</p>
-            <p>Sex: {{ elephant.sex }}</p>
-            <p>Fictional: {{ elephant.fictional }}</p>
-            <p>Date of Birth: {{ elephant.dob }}</p>
-            <p>Date of Death: {{ elephant.dod }}</p>
-            <p>Wikilink: <a href="{{ elephant.wikilink }}">Click to Learn More About {{ elephant.name }}</a></p>
-            <img src="{{ elephant.image.url }}"  style="max-width: 300px;"; alt="{{ elephant.name }}">
+            <p>Sex: {{ elephant.get_sex_display }}</p>
+            <p>Date of Birth: {{ elephant.get_birthdate_display }}</p>
+            <p>Date of Death: {{ elephant.get_died_display }}</p>
+            <p>Wikilink: <a href="{{ elephant.wikilink }}" target="_blank">Click to Learn More About {{ elephant.name }}</a></p>
+            <img src="{{ elephant.image.url }}"  style="max-height: 200px;"; alt="{{ elephant.name }}">
             <p>Note: {{ elephant.note }} </p>
     </div>
     <div class="card-action">
         <a href="{% url 'elephants_update' elephant.id %}">Edit</a>
         <a href="{% url 'elephants_delete' elephant.id %}">Delete</a>
     </div>
+
+
 </div>
 
 {% endblock %}

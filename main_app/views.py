@@ -27,7 +27,7 @@ class ElephantCreate(CreateView):
 
 class ElephantUpdate(UpdateView):
     model = Elephant
-    fields = ['affiliation', 'species', 'sex', 'fictional', 'dob', 'dod', 'wikilink', 'image', 'note']
+    fields = ['affiliation', 'species', 'sex', 'dob', 'dod', 'wikilink', 'image', 'note']
 
 class ElephantDelete(DeleteView):
     model = Elephant
