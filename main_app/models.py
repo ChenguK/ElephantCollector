@@ -1,8 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from datetime import date
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
-
 
 # Create your models here.
 
@@ -49,8 +49,8 @@ class Elephant(models.Model):
         choices=SEX,
         default=SEX[0][0],
     )
-    birthdate = models.CharField(max_length=50) 
-    died = models.CharField(max_length=50)
+    birthdate = models.CharField(max_length=50, help_text=_("Please enter the Elephant's Birth Year or 'Unknown'")) 
+    died = models.CharField(max_length=50, help_text=_("Please enter the Year the Elephant Died, 'Unknown' or 'Alive'"))
     wikilink = models.URLField(max_length=200)
     image = models.ImageField(upload_to='images/')
     note = models.TextField(max_length=500)

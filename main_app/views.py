@@ -80,6 +80,24 @@ def add_photo(request, elephant_id):
             print('An error occurred uploading file to s3')
     return redirect('detail', elephant_id=elephant_id)
 
+# @login_required
+# def delete_photo(request, elephant_id, photo_id):
+#   Elephant.objects.get(id=elephant_id).photos.remove(photo_id)
+#   return redirect('detail', elephant_id=elephant_id)
+
+        # try:
+        #     # s3.upload_fileobj(photo_file, BUCKET, key)
+        #     url = f"{S3_BASE_URL}{BUCKET}/{key}"
+        #     photo = Photo(url=url, elephant_id=elephant_id)
+        #     photo.delete_key(key)
+        # except:
+        #     print('An error occurred uploading file to s3')
+    # return redirect('detail', elephant_id=elephant_id)
+
+# class PhotoDelete(LoginRequiredMixin, DeleteView):
+#     model = Photo
+#     success_url = '/elephants/'
+
 @login_required
 def assoc_trainer(request, elephant_id, trainer_id):
   Elephant.objects.get(id=elephant_id).trainers.add(trainer_id)

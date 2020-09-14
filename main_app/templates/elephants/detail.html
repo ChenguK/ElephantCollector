@@ -28,7 +28,7 @@
                             <p class="modal-note" style="font-weight: bold; padding: 7rem 0 0 1rem;">Note: {{ elephant.note }} </p>
                         </div>
                     </div>
-                <div class="modal-footer">
+  5              <div class="modal-footer">
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
                 </div>
             </div>
@@ -36,6 +36,8 @@
     </div>
         {% for photo in elephant.photo_set.all %}
             <img src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img card-panel">
+            
+
             {% empty %}
             <div class="card-panel teal-text center-align">No Photos Uploaded</div>
         {% endfor %}
@@ -86,15 +88,15 @@
         <div class="card">
 			<div class="card-content">
 				<span class="card-title">
-					{{ trainer.name.capitalize }} with <span class="{{trainer.color.lower}}-text">{{ trainer.color.capitalize }}</span> Shorts!
+					{{ trainer.name.capitalize }} in the <span class="{{trainer.color.lower}}-text">{{ trainer.color.capitalize }}</span> Shorts
             </span>
-          </div>
             <div class="card-action">
                 <form action="{% url 'unassoc_trainer' elephant.id trainer.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn">Remove</button>
                 </form>
             </div>
+          </div>
         </div>
       {% endfor %}
     {% else %}
@@ -108,7 +110,7 @@
         <div class="card">
             <div class="card-content">
                     <span class="card-title">
-                        {{ trainer.name.capitalize }} with <span class="{{trainer.color.lower}}-text">{{ trainer.color.capitalize }}</span> Shorts!
+                        {{ trainer.name.capitalize }} in the <span class="{{trainer.color.lower}}-text">{{ trainer.color.capitalize }}</span> Shorts!
                     </span>
             </div>
             <div class="card-action">
