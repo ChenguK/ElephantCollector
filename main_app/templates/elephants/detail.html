@@ -35,7 +35,7 @@
                         <div style="display: inline-flex" >
                             {% for photo in elephant.photo_set.all %}
                             {% if forloop.first %}
-                            <img style="max-height: 400px;" src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img card-panel">
+                            <img style="max-height: 400px; max-width: 300px;" src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img card-panel">
                             {% endif %}
                             {% empty %}
                             <img style="max-height: 400px; " src="https://icon-library.com/images/animals-512.png" alt="{{ photo.elephant.name }}" class="responsive-img card-panel">
