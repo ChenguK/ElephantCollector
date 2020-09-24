@@ -37,6 +37,7 @@ class Trainer(models.Model):
 
 class Elephant(models.Model):
     name = models.CharField(max_length=100)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
     affiliation = models.CharField(max_length=200, help_text=_("Please Enter the Person or Company with whom they were most Affiated."))
     species = models.CharField(
         max_length=1,
@@ -67,6 +68,9 @@ class Elephant(models.Model):
 
     def cared_for_today(self):
         return self.care_set.filter(date=date.today()).count() >= len(SERVICES)
+        
+    class Meta:
+        ordering = ['-created_date']
  
 class Care(models.Model):
     date = models.DateField('care date')
