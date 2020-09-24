@@ -121,10 +121,12 @@ class ElephantDelete(LoginRequiredMixin, DeleteView):
     model = Elephant
     success_url = '/elephants/'
 
+@login_required
 def trainers_index(request):
     trainers = Trainer.objects.all()
     return render(request, 'trainers/index.html', { 'trainers': trainers })
 
+@login_required
 def trainers_detail(request, trainer_id):
     trainer = Trainer.objects.get(id=trainer_id)
     return render(request, 'trainers/detail.html', { 'trainer': trainer})
