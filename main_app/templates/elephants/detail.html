@@ -50,7 +50,7 @@
     </div>
     {% for photo in elephant.photo_set.all %}
     {% if not forloop.first %}
-    <img style="max-height: 400px; max-width: 400px;" src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img ">
+    <img style="max-width: 400px;" src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img ">
     {% endif %}
     {% if user == elephant.user %}
     <h6>To see the elephant above a bit closer, give it a click!</h6>
