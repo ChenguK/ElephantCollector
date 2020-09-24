@@ -52,7 +52,6 @@
     {% if not forloop.first %}
     <img style="max-height: 400px; " src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img card-panel">
     {% endif %}
-    <br>
     {% if user == elephant.user %}
     <h6>To see the elephant above a bit closer, give it a click!</h6>
     <a href="{% url 'photos_delete' elephant.id photo.id %}">Delete Photo</a>
