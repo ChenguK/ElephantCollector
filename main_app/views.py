@@ -42,12 +42,10 @@ def signup(request):
 
 class ElephantList(LoginRequiredMixin, ListView):
     model = Elephant
-    paginate_by = 10
 
 @login_required
 def profile(request):
     elephants = Elephant.objects.filter(user=request.user)
-    paginate_by = 10
     return render(request, 'registration/user_index.html', { 'elephants': elephants })
 
 @login_required
