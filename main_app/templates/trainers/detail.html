@@ -12,7 +12,7 @@
             <p></p>
         </div>
         <div class="card-action">
-            {%if user == trainer.user %}
+            {% if user == trainer.user %}
             <a href="{% url 'trainers_update' trainer.id %}">Edit</a>
             <a href="{% url 'trainers_delete' trainer.id %}">Delete</a>
             {% endif %}
