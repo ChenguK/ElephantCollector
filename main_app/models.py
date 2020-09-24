@@ -6,21 +6,16 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-# BIRTH = (
-#     ('U', 'Unknown'),
-#     ('D', 'Year'),
-# )
 
-# DEATH = (
-#     ('U', 'Unknown'),
-#     ('D', 'Year'),
-#     ('A', 'Alive'),
-#  )
+SPECIES = (
+    ('1', 'African'),
+    ('2', 'Asian'),
+)
 
 SEX = (
     ('F', 'Female'),
     ('M', 'Male'),
-    ('U', 'Unknown')
+    ('U', 'Unknown'),
 )
 
 SERVICES = (
@@ -42,8 +37,12 @@ class Trainer(models.Model):
 
 class Elephant(models.Model):
     name = models.CharField(max_length=100)
-    affiliation = models.CharField(max_length=200)
-    species = models.CharField(max_length=100)
+    affiliation = models.CharField(max_length=200, help_text=_("Please Enter the Person or Company with whom they were most Affiated."))
+    species = models.CharField(
+        max_length=1,
+        choices=SPECIES,
+        default=SPECIES[0][0],
+    )
     sex = models.CharField(
         max_length=1,
         choices=SEX,
@@ -52,20 +51,19 @@ class Elephant(models.Model):
     birthdate = models.CharField(max_length=50, help_text=_("Please enter the Elephant's Birth Year or 'Unknown'")) 
     died = models.CharField(max_length=50, help_text=_("Please enter the Year the Elephant Died, 'Unknown' or 'Alive'"))
     wikilink = models.URLField(max_length=200)
-    image = models.ImageField(upload_to='images/')
     note = models.TextField(max_length=500)
     trainers = models.ManyToManyField(Trainer)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-# placeholder = "Enter the Year the Elephant Died, Unknown or Alive"
-#     @Html.TextBoxFor(m. =>.new { htmlAttributes = new { @class = "form-control input-md",
-# @placeholder = "Enter the Elephant's Birth Year or Unknown" } })
-
     def __str__(self):
         return self.name
 
+
     def get_absolute_url(self):
         return reverse('detail', kwargs={'elephant_id': self.id })
+
+    def has_elephants(self):
+        return self.elephant_set
 
     def cared_for_today(self):
         return self.care_set.filter(date=date.today()).count() >= len(SERVICES)

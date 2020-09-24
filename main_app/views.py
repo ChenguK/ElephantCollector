@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView
 from django.core.files.storage import FileSystemStorage
 
 from django.contrib.auth import login
@@ -7,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+import os
 import uuid
 import boto3
 from .models import Elephant, Trainer, Photo
@@ -39,10 +40,15 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
+class ElephantList(LoginRequiredMixin, ListView):
+    model = Elephant
+    paginate_by = 10
+
 @login_required
-def elephants_index(request):
+def profile(request):
     elephants = Elephant.objects.filter(user=request.user)
-    return render(request, 'elephants/index.html', { 'elephants': elephants })
+    paginate_by = 10
+    return render(request, 'registration/user_index.html', { 'elephants': elephants })
 
 @login_required
 def elephants_detail(request, elephant_id):
@@ -80,23 +86,14 @@ def add_photo(request, elephant_id):
             print('An error occurred uploading file to s3')
     return redirect('detail', elephant_id=elephant_id)
 
-# @login_required
-# def delete_photo(request, elephant_id, photo_id):
-#   Elephant.objects.get(id=elephant_id).photos.remove(photo_id)
-#   return redirect('detail', elephant_id=elephant_id)
+@login_required
+def photos_delete(request, elephant_id, photo_id):
+    context={}
+    obj = get_object_or_404(Photo, id=photo_id)
 
-        # try:
-        #     # s3.upload_fileobj(photo_file, BUCKET, key)
-        #     url = f"{S3_BASE_URL}{BUCKET}/{key}"
-        #     photo = Photo(url=url, elephant_id=elephant_id)
-        #     photo.delete_key(key)
-        # except:
-        #     print('An error occurred uploading file to s3')
-    # return redirect('detail', elephant_id=elephant_id)
-
-# class PhotoDelete(LoginRequiredMixin, DeleteView):
-#     model = Photo
-#     success_url = '/elephants/'
+    if request.method == 'GET':
+        obj.delete()
+        return redirect('detail', elephant_id)
 
 @login_required
 def assoc_trainer(request, elephant_id, trainer_id):
@@ -110,7 +107,7 @@ def unassoc_trainer(request, elephant_id, trainer_id):
 
 class ElephantCreate(LoginRequiredMixin, CreateView):
     model = Elephant
-    fields = ['name', 'affiliation', 'species', 'sex', 'birthdate', 'died', 'wikilink', 'image', 'note']
+    fields = ['name', 'affiliation', 'species', 'sex', 'birthdate', 'died', 'wikilink', 'note']
     
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -118,7 +115,7 @@ class ElephantCreate(LoginRequiredMixin, CreateView):
 
 class ElephantUpdate(LoginRequiredMixin, UpdateView):
     model = Elephant
-    fields = ['affiliation', 'species', 'sex', 'birthdate', 'died', 'wikilink', 'image', 'note']
+    fields = ['affiliation', 'species', 'sex', 'birthdate', 'died', 'wikilink', 'note']
 
 class ElephantDelete(LoginRequiredMixin, DeleteView):
     model = Elephant

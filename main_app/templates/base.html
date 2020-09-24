@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://icon-library.com/images/animals-512.png" />
     <title>Elephant Collector</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -14,19 +15,20 @@
 <body>
     <header class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper teal">
                 <ul>
                     <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Elephant Collector</a></li>
                 </ul>
                 <ul class="right">
-                    <li><a href="{% url 'about' %}">About</a></li>
                     {% if user.is_authenticated %}
-                    <li>Signed in as {{ user.username }}</li>
+                    <li>Signed in as {{ user.username.capitalize }}</li>
+                    <li><a href="{% url 'elephants_list' %}">Elephants</a></li>
                     <li><a href="{% url 'elephants_create' %}">Add An Elephant</a></li>
-                    <li><a href="{% url 'index' %}">View All My Elephants</a></li>
-                    <li><a href="{% url 'trainers_index' %}">View All My Trainers</a></li>
+                    <li><a href="{% url 'profile' %}">{{ user.username.capitalize }}'s Elephants</a></li>
+                    <li><a href="{% url 'trainers_index' %}"> Trainers</a></li>
                     <li><a href="{% url 'trainers_create' %}">Add A Trainer</a></li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
                     {% else %}
                     <li><a href="{% url 'signup' %}">Sign Up</a></li>
                     <li><a href="{% url 'login' %}">Login</a></li>
@@ -39,7 +41,7 @@
         {% block content %}
         {% endblock %}
     </main>
-    <footer class="page-footer">
+    <footer class="page-footer teal">
         <div class="right">All Rights Reserved, &copy; 2020 Elephant Collector &nbsp;</div>
     </footer>
 </body>
