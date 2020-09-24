@@ -72,7 +72,7 @@ class Elephant(models.Model):
         return self.care_set.filter(date=date.today()).count() >= len(SERVICES)
         
     class Meta:
-        ordering = ['-created_date']
+        ordering = ['name']
  
 class Care(models.Model):
     date = models.DateField('care date')
