@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>{{ user.username.capitalize }}'s Elephant{{ elephant.has_elephants.count|pluralize }}</h1>
+<h1>{{ user.username.capitalize }}'s Elephants</h1>
 
 {% for elephant in elephants %}
 <div class="card">
