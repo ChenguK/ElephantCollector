@@ -7,7 +7,7 @@
             <div class="card-content">
                 <span class="card-title">{{ elephant.name }}</span>
                     <p>Affiliation: {{ elephant.affiliation }}</p>
-                    <p>Species: {{ elephant.species.get_species_display }}</p>
+                    <p>Species: {{ elephant.get_species_display }}</p>
                     <p>Sex: {{ elephant.get_sex_display }}</p>
                     <p>Date of Birth: {{ elephant.birthdate }}</p>
                     <p>Date of Death: {{ elephant.died }}</p>
