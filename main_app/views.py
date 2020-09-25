@@ -131,7 +131,7 @@ def trainers_detail(request, trainer_id):
 
 class TrainerCreate(LoginRequiredMixin, CreateView):
     model = Trainer
-    fields = '__all__'
+    fields = ['name', 'color']
 
 class TrainerUpdate(LoginRequiredMixin, UpdateView):
     model = Trainer
