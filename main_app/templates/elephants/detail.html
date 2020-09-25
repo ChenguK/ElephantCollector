@@ -54,6 +54,7 @@
     <img style="max-height: 400px;" src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img ">
     {% endif %}
     {% if user == elephant.user %}
+    <br>
     <a href="{% url 'photos_delete' elephant.id photo.id %}" class="btn">Delete Photo</a>
     {% endif %}
     {% empty %}
