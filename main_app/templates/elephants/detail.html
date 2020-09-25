@@ -53,15 +53,15 @@
     <img style="max-height: 400px;" src="{{ photo.url }}" alt="{{ photo.elephant.name }}" class="responsive-img ">
     {% endif %}
     {% if user == elephant.user %}
-    <h6>To see the elephant above a bit closer, give it a click!</h6>
     <a href="{% url 'photos_delete' elephant.id photo.id %}" class="btn">Delete Photo</a>
     {% endif %}
     {% empty %}
     <h4>To add a photo of your elephant upload a photo, upload below </h4>
-            <div class="card-panel teal-text center-align">No Photos Uploaded</div>
-        {% endfor %}
-        {% if user == elephant.user %}
-
+    <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+    {% endfor %}
+    {% if user == elephant.user %}
+    
+            <h6>To see the elephant above a bit closer, give it a click!</h6>
             <form action="{% url 'add_photo' elephant.id %}" enctype="multipart/form-data" method="post" class="card-panel">
                 {% csrf_token %}
                 <input type="file" name="photo-file">
